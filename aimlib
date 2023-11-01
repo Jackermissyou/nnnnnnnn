@@ -1,0 +1,48 @@
+_G.aim = true
+getgenv().killed = {}
+getgenv().players = game.Players:GetPlayers()
+function getNearestTarget()
+dist = math.huge
+p = nil
+ for i, v in pairs(getgenv().players) do
+ 
+ if v ~= game.Players.LocalPlayer and v.Character and v and p ~= v then 
+    
+   
+  if (v.Character.HumanoidRootPart.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position). Magnitude < dist and unscan ~= v then 
+
+   dist = (v.Character.HumanoidRootPart.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position). magnitude 
+   p = v
+ end
+ end
+ end
+return p
+end
+spawn(function()
+while _G.aim do
+wait()
+PlayersPosition = getNearestTarget().Character.HumanoidRootPart.CFrame.Position
+Playersaimbot = getNearestTarget().Name
+end
+end)
+
+spawn(function()
+    local gg = getrawmetatable(game)
+    local old = gg.__namecall
+    setreadonly(gg,false)
+    gg.__namecall = newcclosure(function(...)
+        local method = getnamecallmethod()
+        local args = {...}
+        if tostring(method) == "FireServer" then
+            if tostring(args[1]) == "RemoteEvent" then
+                if tostring(args[2]) ~= "true" and tostring(args[2]) ~= "false" then
+                    if Playersaimbot ~= nil then
+                        args[2] = PlayersPosition
+                        return old(unpack(args))
+                    end
+                end
+            end
+        end
+        return old(...)
+    end)
+end)

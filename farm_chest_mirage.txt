@@ -1,0 +1,53 @@
+function TP(P1, offsetY)
+    spawn(function()
+        if not game.Players.LocalPlayer.Character.PrimaryPart:FindFirstChild("Hold") then
+            local Hold = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.PrimaryPart)
+            Hold.Name = "Hold"
+            Hold.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+            Hold.Velocity = Vector3.new(0, 0, 0)
+        end
+        Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+        if not offsetY then
+            offsetY = 0
+        end
+        local mul = 1
+        if Distance < 250 then
+            Speed = 700 * mul
+        elseif Distance < 500 then
+            Speed = 500 * mul
+        elseif Distance < 1000 then
+            Speed = 450 * mul
+        elseif Distance >= 1000 then
+            Speed = 350 * mul
+        end
+        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear),{ CFrame = P1 * CFrame.new(0, offsetY, 0)}):Play()
+    end)
+end
+
+local nrest = math.huge
+
+if workspace.Map:FindFirstChild("MysticIsland") then
+    local mirage = workspace.Map:FindFirstChild("MysticIsland"):FindFirstChild("Chests"):GetChildren()
+    table.sort(mirage,function(a,b)
+        if game.Players.LocalPlayer.Character and a ~= nil and b ~= nil then
+            pcall(function()
+                return (a.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude < (b.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude
+            end)
+        end
+    end)
+    for i,v in pairs(mirage) do
+        repeat wait()
+            TP(v.CFrame)
+            if game.Players.LocalPlayer:GetDistanceFromCharacter(v.Position) <= 75 then
+                firetouchinterest(b, game.Players.LocalPlayer.Character.PrimaryPart, 0)
+            end
+        until v == nil
+    end
+else
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "CHECK MIRAGE"; -- the title (ofc)
+        Text = "Mirage not Spawn!"; -- what the text says (ofc)
+        Icon = "rbxassetid://13131915350"; -- the image if u want. 
+        Duration = 10; -- how long the notification should in secounds
+        })
+end

@@ -1,0 +1,38 @@
+
+
+
+
+
+
+---- anh nho em lam em co the quay lai voi anh ko
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+repeat wait() until game:IsLoaded()
+_G.Setting = {
+    ["Team"] = "Marines",
+    ["SuicideAfterXChest"] = 5,
+    ["SuperFpsBoost"] = false,
+    ["Stop If You Get The God's Chalice"] = true,
+    ["Stop If You Get The Fist of Darkness"] = true,
+    ["HopServer"] = {
+        ["Enable"] = true,
+        ["HopServerAfterXChest"] = 100, --math.huge is infinity
+        ["HopIfThereIsNoChest"] = true
+    },
+    ["Discord:"] = "" ---link wbehook
+}
+loadstring(game:HttpGet("https://github.com/Jackermissyou/sunhub/blob/main/autochetv3.txt"))()
